@@ -107,9 +107,7 @@ def upload_file():
             return render_template_string("""
                 <!DOCTYPE html>
                 <html lang="en">
-                <head>
-                    <title>Error</title>
-                </head>
+                <head><title>Error</title></head>
                 <body>
                     <h1 style="color: red;">Error: No file uploaded.</h1>
                     <p>Please select a JSON file.</p>
@@ -123,9 +121,7 @@ def upload_file():
             return render_template_string("""
                 <!DOCTYPE html>
                 <html lang="en">
-                <head>
-                    <title>Error</title>
-                </head>
+                <head><title>Error</title></head>
                 <body>
                     <h1 style="color: red;">Error: No selected file.</h1>
                     <p>Please choose a valid JSON file.</p>
@@ -135,14 +131,11 @@ def upload_file():
             """)
 
         try:
-            # Check if the file is empty
             if file.read(1) == b"":  
                 return render_template_string("""
                     <!DOCTYPE html>
                     <html lang="en">
-                    <head>
-                        <title>Error</title>
-                    </head>
+                    <head><title>Error</title></head>
                     <body>
                         <h1 style="color: red;">Error: Empty file.</h1>
                         <p>Please upload a valid JSON file.</p>
@@ -150,22 +143,33 @@ def upload_file():
                     </body>
                     </html>
                 """)
-            file.seek(0)  # Reset file pointer after checking
+            file.seek(0)
 
-            # Load and validate JSON
             json_data = json.load(file)
 
-            # Ensure the "name" field exists
             if "name" not in json_data:
                 return render_template_string("""
                     <!DOCTYPE html>
                     <html lang="en">
-                    <head>
-                        <title>Error</title>
-                    </head>
+                    <head><title>Error</title></head>
                     <body>
                         <h1 style="color: red;">Error: Missing 'name' field.</h1>
-                        <p>Please check your JSON file format.</p>
+                        <p>Your JSON file must include a "name" field at the top.</p>
+                        <p><strong>Example of a correct JSON file:</strong></p>
+                        <pre>
+{
+    "name": "ExampleLoadout",
+    "attachmentSlotItemSets": [
+        {
+            "slotName": "hands",
+            "discreteItemSets": [
+                { "itemType": "M4A1" }
+            ]
+        }
+    ]
+}
+                        </pre>
+                        <p>Please edit your file and try again.</p>
                         <a href="/">Go back</a>
                     </body>
                     </html>
@@ -181,44 +185,12 @@ def upload_file():
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>JSON to XML Converter</title>
                     <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            background-color: #f4f4f4;
-                            text-align: center;
-                            padding: 20px;
-                        }
-                        h1 {
-                            color: #333;
-                        }
-                        .container {
-                            background: white;
-                            padding: 20px;
-                            border-radius: 8px;
-                            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                            max-width: 600px;
-                            margin: auto;
-                        }
-                        pre {
-                            background: #eee;
-                            padding: 10px;
-                            border-radius: 5px;
-                            text-align: left;
-                            overflow-x: auto;
-                        }
-                        a, button {
-                            display: inline-block;
-                            background: #007BFF;
-                            color: white;
-                            padding: 10px 20px;
-                            text-decoration: none;
-                            border-radius: 5px;
-                            margin-top: 10px;
-                            border: none;
-                            cursor: pointer;
-                        }
-                        a:hover, button:hover {
-                            background: #0056b3;
-                        }
+                        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 20px; }
+                        h1 { color: #333; }
+                        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: auto; }
+                        pre { background: #eee; padding: 10px; border-radius: 5px; text-align: left; overflow-x: auto; }
+                        a, button { display: inline-block; background: #007BFF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; border: none; cursor: pointer; }
+                        a:hover, button:hover { background: #0056b3; }
                     </style>
                 </head>
                 <body>
@@ -237,9 +209,7 @@ def upload_file():
             return render_template_string("""
                 <!DOCTYPE html>
                 <html lang="en">
-                <head>
-                    <title>Error</title>
-                </head>
+                <head><title>Error</title></head>
                 <body>
                     <h1 style="color: red;">Error: Invalid JSON format.</h1>
                     <p>Please check your file and try again.</p>
@@ -252,9 +222,7 @@ def upload_file():
             return render_template_string(f"""
                 <!DOCTYPE html>
                 <html lang="en">
-                <head>
-                    <title>Error</title>
-                </head>
+                <head><title>Error</title></head>
                 <body>
                     <h1 style="color: red;">Error processing file.</h1>
                     <p>{str(e)}</p>
@@ -271,38 +239,12 @@ def upload_file():
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>JSON to XML Converter</title>
             <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f4f4f4;
-                    text-align: center;
-                    padding: 20px;
-                }
-                h1 {
-                    color: #333;
-                }
-                .container {
-                    background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                    max-width: 400px;
-                    margin: auto;
-                }
-                input[type="file"] {
-                    display: block;
-                    margin: 10px auto;
-                }
-                button {
-                    background: #007BFF;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-                button:hover {
-                    background: #0056b3;
-                }
+                body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 20px; }
+                h1 { color: #333; }
+                .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); max-width: 400px; margin: auto; }
+                input[type="file"] { display: block; margin: 10px auto; }
+                button { background: #007BFF; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+                button:hover { background: #0056b3; }
             </style>
         </head>
         <body>
