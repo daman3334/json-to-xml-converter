@@ -63,5 +63,8 @@ def download_file():
     
     return send_file(xml_file, as_attachment=True, download_name="output.xml", mimetype="text/xml")
 
+import os
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))  # Use Render's assigned port
+    app.run(host="0.0.0.0", port=port)
