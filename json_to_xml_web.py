@@ -20,66 +20,47 @@ def get_major_priority(slot_name, item_name):
     s = slot_name.lower()
     i = item_name.lower()
 
+    # HANDS (Highest Priority)
+    if s == "hands":
+        return -1  # Ensures "Hands" items appear at the very top
+
+    # HEADGEAR
     if any(x in s for x in ["helmet", "face", "mask", "eyewear", "headgear"]) or any(x in i for x in ["helmet", "nvg", "balaclava", "hat", "goggles"]):
         return 0
+
+    # SHOULDER LEFT
     if s == "shoulderl":
         return 1
+
+    # SHOULDER RIGHT
     if s == "shoulderr":
         return 2
+
+    # GLOVES
     if s == "gloves":
         return 3
+
+    # BOOTS
     if s == "boots":
         return 4
+
+    # BELT
     if s == "belt":
         return 5
+
+    # VEST
     if s == "vest":
         return 6
+
+    # BODY (Legs)
     if s == "body" or s == "legs":
         return 7
+
+    # STORAGE (Back)
     if s == "back":
         return 8
-    return 9
 
-def belt_priority(item_name):
-    i = item_name.lower()
-    if "belt" in i:
-        return 0
-    if "canteen" in i:
-        return 1
-    if "nylonknifesheath" in i:
-        return 2
-    if "knife" in i:
-        return 3
-    if "holster" in i:
-        return 4
-    if any(x in i for x in ["glock", "colt", "pistol", "fnx", "deagle"]):
-        return 5
-    if "optic" in i:
-        return 6
-    if "mag_" in i:
-        return 7
-    if "pistolsuppressor" in i:
-        return 8
-    return 9
-
-def vest_priority(item_name):
-    i = item_name.lower()
-    if "platecarriervest" in i:
-        return 0
-    if "platecarrierpouches" in i:
-        return 1
-    if "flashgrenade" in i:
-        return 2
-    if any(x in i for x in ["glock", "colt", "pistol", "fnx", "deagle"]):
-        return 3
-    if "optic" in i:
-        return 4
-    if "mag_" in i:
-        return 5
-    if "pistolsuppressor" in i:
-        return 6
-    if "holster" in i:
-        return 7
+    # EVERYTHING ELSE
     return 9
 
 def gather_items(item_set, slot_name, accumulator):
@@ -107,12 +88,7 @@ def convert_json_to_xml(json_data):
 
     def sort_key(entry):
         major = get_major_priority(entry["slot"], entry["item"])
-        minor = 0
-        if major == 5:
-            minor = belt_priority(entry["item"])
-        elif major == 6:
-            minor = vest_priority(entry["item"])
-        return (major, minor)
+        return (major, 0)
 
     items_list.sort(key=sort_key)
 
