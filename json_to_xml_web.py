@@ -139,21 +139,119 @@ def upload_file():
             xml_output = convert_json_to_xml(json_data)
             
             return render_template_string("""
-                <h2>XML Preview</h2>
-                <pre>{{ xml_output }}</pre>
-                <a href="/download?xml={{ xml_output | urlencode }}">Download XML</a>
-                <br><br>
-                <a href="/">Upload another file</a>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>JSON to XML Converter</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            text-align: center;
+                            padding: 20px;
+                        }
+                        h1 {
+                            color: #333;
+                        }
+                        .container {
+                            background: white;
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                            max-width: 600px;
+                            margin: auto;
+                        }
+                        pre {
+                            background: #eee;
+                            padding: 10px;
+                            border-radius: 5px;
+                            text-align: left;
+                            overflow-x: auto;
+                        }
+                        a, button {
+                            display: inline-block;
+                            background: #007BFF;
+                            color: white;
+                            padding: 10px 20px;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 10px;
+                            border: none;
+                            cursor: pointer;
+                        }
+                        a:hover, button:hover {
+                            background: #0056b3;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>XML Preview</h1>
+                        <pre>{{ xml_output }}</pre>
+                        <a href="/download?xml={{ xml_output | urlencode }}">Download XML</a>
+                        <br><br>
+                        <a href="/">Upload another file</a>
+                    </div>
+                </body>
+                </html>
             """, xml_output=xml_output)
         except Exception as e:
             return f"Error processing file: {str(e)}"
 
     return render_template_string('''
-        <h1>Upload JSON File</h1>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <input type="submit" value="Convert to XML">
-        </form>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>JSON to XML Converter</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f4f4f4;
+                    text-align: center;
+                    padding: 20px;
+                }
+                h1 {
+                    color: #333;
+                }
+                .container {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                    max-width: 400px;
+                    margin: auto;
+                }
+                input[type="file"] {
+                    display: block;
+                    margin: 10px auto;
+                }
+                button {
+                    background: #007BFF;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+                button:hover {
+                    background: #0056b3;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Upload JSON File</h1>
+                <form method="post" enctype="multipart/form-data">
+                    <input type="file" name="file">
+                    <button type="submit">Convert to XML</button>
+                </form>
+            </div>
+        </body>
+        </html>
     ''')
 
 @app.route("/download")
