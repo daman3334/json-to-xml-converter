@@ -148,6 +148,14 @@ def upload_file():
         except Exception as e:
             return f"Error processing file: {str(e)}"
 
+    return render_template_string('''
+        <h1>Upload JSON File</h1>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Convert to XML">
+        </form>
+    ''')
+
 @app.route("/download")
 def download_file():
     xml_content = request.args.get("xml", "")
