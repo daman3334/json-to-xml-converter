@@ -104,16 +104,75 @@ def convert_json_to_xml(json_data):
 def upload_file():
     if request.method == "POST":
         if "file" not in request.files:
-            return "No file uploaded"
-        
+            return render_template_string("""
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <title>Error</title>
+                </head>
+                <body>
+                    <h1 style="color: red;">Error: No file uploaded.</h1>
+                    <p>Please select a JSON file.</p>
+                    <a href="/">Go back</a>
+                </body>
+                </html>
+            """)
+
         file = request.files["file"]
         if file.filename == "":
-            return "No selected file"
-        
+            return render_template_string("""
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <title>Error</title>
+                </head>
+                <body>
+                    <h1 style="color: red;">Error: No selected file.</h1>
+                    <p>Please choose a valid JSON file.</p>
+                    <a href="/">Go back</a>
+                </body>
+                </html>
+            """)
+
         try:
+            # Check if the file is empty
+            if file.read(1) == b"":  
+                return render_template_string("""
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <title>Error</title>
+                    </head>
+                    <body>
+                        <h1 style="color: red;">Error: Empty file.</h1>
+                        <p>Please upload a valid JSON file.</p>
+                        <a href="/">Go back</a>
+                    </body>
+                    </html>
+                """)
+            file.seek(0)  # Reset file pointer after checking
+
+            # Load and validate JSON
             json_data = json.load(file)
+
+            # Ensure the "name" field exists
+            if "name" not in json_data:
+                return render_template_string("""
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <title>Error</title>
+                    </head>
+                    <body>
+                        <h1 style="color: red;">Error: Missing 'name' field.</h1>
+                        <p>Please check your JSON file format.</p>
+                        <a href="/">Go back</a>
+                    </body>
+                    </html>
+                """)
+
             xml_output = convert_json_to_xml(json_data)
-            
+
             return render_template_string("""
                 <!DOCTYPE html>
                 <html lang="en">
@@ -173,8 +232,36 @@ def upload_file():
                 </body>
                 </html>
             """, xml_output=xml_output)
+
+        except json.JSONDecodeError:
+            return render_template_string("""
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <title>Error</title>
+                </head>
+                <body>
+                    <h1 style="color: red;">Error: Invalid JSON format.</h1>
+                    <p>Please check your file and try again.</p>
+                    <a href="/">Go back</a>
+                </body>
+                </html>
+            """)
+
         except Exception as e:
-            return f"Error processing file: {str(e)}"
+            return render_template_string(f"""
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <title>Error</title>
+                </head>
+                <body>
+                    <h1 style="color: red;">Error processing file.</h1>
+                    <p>{str(e)}</p>
+                    <a href="/">Go back</a>
+                </body>
+                </html>
+            """)
 
     return render_template_string('''
         <!DOCTYPE html>
