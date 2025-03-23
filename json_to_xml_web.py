@@ -6,7 +6,8 @@ import io
 import os
 from datetime import datetime
 
-app = Flask(__name__, template_folder="templates")
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+app = Flask(__name__, template_folder=os.path.join(BASE_DIR, "templates"))
 app.secret_key = "replace-with-a-secret-key"
 
 OFFICIAL_TO_INTERNAL = {
