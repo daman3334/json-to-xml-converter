@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XML Output</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #43e97b, #38f9d7);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center text-white">
+  <div class="backdrop-blur-lg bg-white/20 p-8 rounded-3xl shadow-2xl max-w-4xl w-full border border-white/30">
+    <h1 class="text-2xl font-bold mb-4 text-white drop-shadow text-center">📄 XML Preview</h1>
+    <pre class="bg-white/20 p-4 rounded-xl overflow-x-auto text-sm whitespace-pre-wrap text-white">{{ xml_output }}</pre>
+    <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="/download?xml={{ xml_output | urlencode }}" class="bg-white/80 text-green-800 font-semibold px-4 py-2 rounded-xl hover:bg-white hover:scale-[1.03] transition">
+        ⬇️ Download XML
+      </a>
+      <a href="/" class="bg-white/50 text-gray-800 px-4 py-2 rounded-xl hover:bg-white/70 hover:scale-[1.03] transition">
+        🔄 Upload Another
+      </a>
+    </div>
+  </div>
+</body>
+</html>
